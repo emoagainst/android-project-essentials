@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        applicationId "quickstart.emoagainst.com.quickstartapp"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    Map<String, String> dependencies = rootProject.ext.dependencies;
+
+    compile dependencies.appCompat
+    compile dependencies.cardView
+    compile dependencies.recyclerView
+    compile dependencies.design
+    compile dependencies.customTabs
+    compile dependencies.palette
+    compile dependencies.retrofit
+    compile dependencies.retrofitConverterGson
+    compile dependencies.retrofitAdapterRxJava
+    compile dependencies.picasso
+    compile dependencies.rxAndroid
+    compile dependencies.circleImageView
+    compile dependencies.jUnit
+    compile dependencies.mockito
+    compile dependencies.butterknife
+    compile dependencies.glide
+    compile dependencies.glideOkhttpIntegration
+    compile dependencies.prettyEditText
+    compile dependencies.UIL
+    compile dependencies.imageCropper
+    compile dependencies.zoomablePhotoView
+    compile dependencies.once
+    compile dependencies.dagger
+    compile dependencies.daggerCompiler
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile dependencies.robolectric
+    testCompile 'junit:junit:4.12'
+
+}
