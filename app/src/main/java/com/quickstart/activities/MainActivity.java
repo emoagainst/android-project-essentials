@@ -1,21 +1,38 @@
-package com.quickstart;
+package com.quickstart.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.quickstart.Application;
+import com.quickstart.R;
+import com.quickstart.api.GitHubService;
+import com.quickstart.models.Repo;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    GitHubService api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +56,27 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ((Application)getApplication()).getApplicationComponent().inject(this);
+
+        api.listRepos("emoagainst").enqueue(new Callback<List<Repo>>() {
+
+            @Override
+            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+
+                Log.d("MainActivity", response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<List<Repo>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

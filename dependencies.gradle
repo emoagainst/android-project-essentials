@@ -1,17 +1,31 @@
 ext {
-    supportLibraryVersion = '23.2.1'
-    retrofitVersion = '2.0.1'
+    verSupportLibrary = '23.2.1'
+    verRetrofit2 = '2.0.1'
+    verGradleTools = '2.3.0-alpha2'
+    verBuildTools = '25.0.0'
+    verAptPlugin = '1.8'
+    verFabricPlugin = '1+'
+    verKotlin = '1.0.5-2'
+    verDagger = '2.8'
+
+    compileSource = JavaVersion.VERSION_1_7
+    compileTarget = JavaVersion.VERSION_1_7
+
+    verCompileSdk = 25
+    verTargetSdk = verCompileSdk
+    verMinSdk = 16
 
     dependencies = [
-            appCompat             : "com.android.support:appcompat-v7:$supportLibraryVersion",
-            cardView              : "com.android.support:cardview-v7:$supportLibraryVersion",
-            recyclerView          : "com.android.support:recyclerview-v7:$supportLibraryVersion",
-            design                : "com.android.support:design:$supportLibraryVersion",
-            customTabs            : "com.android.support:customtabs:$supportLibraryVersion",
-            palette               : "com.android.support:palette-v7:$supportLibraryVersion",
-            retrofit              : "com.squareup.retrofit2:retrofit:$retrofitVersion",
-            retrofitConverterGson : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
-            retrofitAdapterRxJava : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
+            appCompat             : "com.android.support:appcompat-v7:$verSupportLibrary",
+            cardView              : "com.android.support:cardview-v7:$verSupportLibrary",
+            recyclerView          : "com.android.support:recyclerview-v7:$verSupportLibrary",
+            design                : "com.android.support:design:$verSupportLibrary",
+            customTabs            : "com.android.support:customtabs:$verSupportLibrary",
+            palette               : "com.android.support:palette-v7:$verSupportLibrary",
+            retrofit              : "com.squareup.retrofit2:retrofit:$verRetrofit2",
+            retrofitConverterGson : "com.squareup.retrofit2:converter-gson:$verRetrofit2",
+            retrofitAdapterRxJava : "com.squareup.retrofit2:adapter-rxjava:$verRetrofit2",
+            okHttp3Logging        : 'com.squareup.okhttp3:logging-interceptor:3.1.2',
             picasso               : 'com.squareup.picasso:picasso:2.5.2',
             rxAndroid             : 'io.reactivex:rxandroid:1.0.1',
             circleImageView       : 'de.hdodenhof:circleimageview:1.3.0',
@@ -26,7 +40,9 @@ ext {
             imageCropper          : 'com.edmodo:cropper:1.0.1',
             zoomablePhotoView     : 'com.github.chrisbanes.photoview:library:1.2.3',
             once                  : 'com.jonathanfinerty.once:once:0.4.0',
-            dagger                : 'com.google.dagger:dagger:2.2',
-            daggerCompiler        : 'com.google.dagger:dagger-compiler:2.2'
+            dagger                : "com.google.dagger:dagger:$verDagger",
+            daggerCompiler        : "com.google.dagger:dagger-compiler:$verDagger",
+            kotlin                : "org.jetbrains.kotlin:kotlin-stdlib:$verKotlin",
+            kotlinReflect         : "org.jetbrains.kotlin:kotlin-reflect:$verKotlin"
     ]
 }

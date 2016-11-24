@@ -1,32 +1,64 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+
+    compileSdkVersion verCompileSdk
+    buildToolsVersion verBuildTools
 
     dataBinding {
         enabled = true
     }
 
+    compileOptions {
+        sourceCompatibility compileSource
+        targetCompatibility compileTarget
+    }
+
+
     defaultConfig {
-        applicationId "quickstart.emoagainst.com.quickstartapp"
-        minSdkVersion 16
-        targetSdkVersion 23
+        applicationId "com.quickstartapp"
+        minSdkVersion verMinSdk
+        targetSdkVersion verTargetSdk
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
+
+        debug {
+            debuggable true
+
+            def host = "\"https://api.github.com/\""
+            buildConfigField "String", "HOST", host
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            def host = "\"https://api.github.com/\""
+            buildConfigField "String", "HOST", host
         }
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        instrumentTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
 
     Map<String, String> dependencies = rootProject.ext.dependencies;
 
+    compile dependencies.kotlin
+    compile dependencies.kotlinReflect
     compile dependencies.appCompat
     compile dependencies.cardView
     compile dependencies.recyclerView
@@ -36,6 +68,7 @@ dependencies {
     compile dependencies.retrofit
     compile dependencies.retrofitConverterGson
     compile dependencies.retrofitAdapterRxJava
+    compile dependencies.okHttp3Logging
     compile dependencies.picasso
     compile dependencies.rxAndroid
     compile dependencies.circleImageView
@@ -50,7 +83,7 @@ dependencies {
     compile dependencies.zoomablePhotoView
     compile dependencies.once
     compile dependencies.dagger
-    compile dependencies.daggerCompiler
+    kapt dependencies.daggerCompiler
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile dependencies.robolectric
