@@ -4,6 +4,7 @@ import android.app.Application
 import com.quickstart.activities.MainActivity
 import com.quickstart.api.CookieJar
 import com.quickstart.dagger.modules.AndroidModule
+import com.quickstart.dagger.modules.ApiModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,11 +14,10 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = arrayOf(AndroidModule::class))
+@Component(modules = arrayOf(AndroidModule::class, ApiModule::class))
 interface ApplicationComponent {
     fun inject(application: Application)
     fun inject(activity: MainActivity)
-    fun inject(jar: CookieJar)
 }
 
 class Application : Application() {
@@ -25,6 +25,7 @@ class Application : Application() {
         DaggerApplicationComponent
                 .builder()
                 .androidModule(AndroidModule(this))
+                .apiModule(ApiModule())
                 .build()
     }
 

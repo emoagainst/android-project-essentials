@@ -6,13 +6,8 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.quickstart.Application
-import com.quickstart.BuildConfig
-import com.quickstart.api.GitHubService
-import com.quickstart.api.SampleOkHttpClientConfigurator
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
@@ -22,23 +17,17 @@ import javax.inject.Singleton
 
 @Module
 class AndroidModule (val application: Application) {
-    @Provides @Singleton
-    fun provideApi(): GitHubService{
-        val retrofit = Retrofit.Builder()
-                .client(SampleOkHttpClientConfigurator(application).client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.HOST)
-                .build()
-
-        return retrofit.create(GitHubService::class.java)
-    }
 
     @Provides @Singleton
-    fun provideSharedPreferences(): SharedPreferences{
-        return PreferenceManager.getDefaultSharedPreferences(application)
-    }
+    fun provideSharedPreferences(): SharedPreferences =
+         PreferenceManager.getDefaultSharedPreferences(application)
+
     @Provides @Singleton
-    fun provideGSON() : Gson {
-        return GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
-    }
+    fun provideGSON() : Gson =
+         GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
+
+    @Provides
+    fun provideContext() = application.applicationContext
 }
+
+

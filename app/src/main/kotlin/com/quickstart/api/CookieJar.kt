@@ -2,10 +2,7 @@ package com.quickstart.api
 
 import android.content.Context
 import chest.Chest
-import com.google.gson.FieldNamingPolicy
-import com.google.gson.GsonBuilder
 import okhttp3.Cookie
-import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import java.net.URISyntaxException
 import java.util.*
@@ -16,20 +13,14 @@ import kotlin.properties.Delegates
  * @author Alexey_Ivanov
  */
 
-class CookieJar (): okhttp3.CookieJar {
+class CookieJar (context: Context): okhttp3.CookieJar {
 
     private val STORE_NAME = "AndroidCookieStoreChest"
 
-    private val GSON = GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .create()
-
     private var chest: Chest by Delegates.notNull()
-    private val cookieMap: Hashtable<HttpUrl, MutableList<Cookie>> by lazy {
-        Hashtable<HttpUrl, MutableList<Cookie>>()
-    }
+    private val cookieMap: Hashtable<HttpUrl, MutableList<Cookie>> = Hashtable<HttpUrl, MutableList<Cookie>>()
 
-    @Synchronized fun init(context: Context): CookieJar {
+    init {
         chest = Chest.newInstance(context, STORE_NAME)
 
         // we save cookies as map URL -> Set<String>,
@@ -37,45 +28,35 @@ class CookieJar (): okhttp3.CookieJar {
         @Suppress("UNCHECKED_CAST")
         val prefsMap: Map<String, Set<String>> = chest.getAll() as Map<String, Set<String>>
 
-        prefsMap.forEach { entry: Map.Entry<String, Set<String>> ->
-            try {
-                var hostUrl = HttpUrl.parse(entry.key)
-
-                if (!hostUrl.isHttps) {
-                    // API v1
-                    hostUrl = hostUrl.newBuilder().scheme("https").build()
-                }
-
-                val cookiesSet = entry.value
-
-                val restoredCookies = ArrayList<Cookie>(cookiesSet.size)
-                val cookieStrings = ArrayList<String>(cookiesSet.size)
-
-                cookiesSet.forEach { cookieString ->
-                    // decoding cookie from String and deserializing it
-                    val decodedCookie = decodeCookie(hostUrl, cookieString)
-                    if (decodedCookie != null && !decodedCookie.isExpired()) {
-
-                        restoredCookies.add(decodedCookie)
-                        cookieStrings.add(cookieString)
-
-                    } else {
-                    }
-                }
-
-                cookieMap.put(hostUrl, restoredCookies)
-                chest.putStringSet(hostUrl.toString(), cookieStrings.toSet())
-            } catch (e: URISyntaxException) {
-                // if error occurs and we can't convert String to URL,
-                // then just delete the whole set
-                chest.remove(entry.key)
-            }
-        }
-
-        return this
+        prefsMap.forEach {loadPersistedCookies(it)}
     }
 
+    fun loadPersistedCookies(entry: Map.Entry<String, Set<String>>){
+        try {
+            val hostUrl = HttpUrl.parse(entry.key)
+            val cookiesSet = entry.value
+            val restoredCookies = ArrayList<Cookie>(cookiesSet.size)
+            val cookieStrings = ArrayList<String>(cookiesSet.size)
 
+            cookiesSet.forEach { cookieString ->
+                // decoding cookie from String and deserializing it
+                val decodedCookie = decodeCookie(hostUrl, cookieString)
+                if (decodedCookie != null && !decodedCookie.isExpired()) {
+
+                    restoredCookies.add(decodedCookie)
+                    cookieStrings.add(cookieString)
+
+                }
+            }
+
+            cookieMap.put(hostUrl, restoredCookies)
+            chest.putStringSet(hostUrl.toString(), cookieStrings.toSet())
+        } catch (e: URISyntaxException) {
+            // if error occurs and we can't convert String to URL,
+            // then just delete the whole set
+            chest.remove(entry.key)
+        }
+    }
     override fun loadForRequest(url: HttpUrl?): MutableList<Cookie>? {
         if (url == null) {
             return ArrayList()
@@ -113,7 +94,6 @@ class CookieJar (): okhttp3.CookieJar {
             return false
         }
     }
-
 
     @Synchronized
     fun removeAll(): Boolean {
