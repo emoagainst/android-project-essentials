@@ -70,6 +70,7 @@ dependencies {
     compile dependencies.retrofit2
     compile dependencies.retrofitConverterGson
     compile dependencies.retrofit2Rxjava2Adapter
+    compile dependencies.okHttp3
     compile dependencies.okHttp3Logging
 //    compile dependencies.picasso
     compile dependencies.rxAndroid

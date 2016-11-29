@@ -1,6 +1,12 @@
 package com.quickstart.mvp.repos
 
+import android.util.Log
+import com.quickstart.api.GitHubService
+import com.quickstart.models.Repo
 import com.quickstart.mvp.BaseView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -8,11 +14,12 @@ import javax.inject.Inject
  * @author Alexey_Ivanov
  */
 
-class ReposPresenter @Inject constructor(val reposView : ReposContract.View) : ReposContract.Presenter{
+class ReposPresenter @Inject constructor(val reposView : ReposContract.View, val api : GitHubService) : ReposContract.Presenter{
 
     @Inject
-    fun setListeners(){
-        reposView.presenter = this
+    fun setupListeners(){
+        Log.d("[ReposPresenter]", "setupListeners")
+        reposView.setPresenter(this)
     }
 
     override fun onViewResumed() {
@@ -25,15 +32,15 @@ class ReposPresenter @Inject constructor(val reposView : ReposContract.View) : R
     }
 
     override fun loadRepos() {
-//        api.listRepos("emoagainst").enqueue(object : Callback<List<Repo>> {
-//            override fun onFailure(call: Call<List<Repo>>?, t: Throwable?) {
-//                throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>?) {
-//                Log.d("ReposPresenter", response?.body().toString());
-//            }
-//        });
+        api.listRepos("emoagainst").enqueue(object : Callback<List<Repo>> {
+            override fun onFailure(call: Call<List<Repo>>?, t: Throwable?) {
+
+            }
+
+            override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>?) {
+                Log.d("ReposPresenter", response?.body().toString());
+            }
+        });
     }
 
 }

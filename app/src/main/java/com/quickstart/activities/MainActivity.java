@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ReposFragment reposFragment = (ReposFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (reposFragment == null){
+        ReposFragment reposFragment = (ReposFragment) getSupportFragmentManager().findFragmentById(
+                R.id.fragment_container);
+        if (reposFragment == null) {
             reposFragment = ReposFragment.newInstance();
             ActivityUtilsKt.addFragmentToActivity(getSupportFragmentManager(), reposFragment, R.id.fragment_container);
         }
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity
         DaggerReposPresenterComponent
                 .builder()
                 .applicationComponent(((Application) getApplication()).getApplicationComponent())
-                .reposPresenterModule(new ReposPresenterModule(reposFragment))
-                .build();
+                .reposPresenterModule(new ReposPresenterModule(reposFragment)).build()
+                .inject(this);
     }
 
     @Override

@@ -31,7 +31,7 @@ interface ReposContract {
 @Module
 class ReposPresenterModule(val view: ReposContract.View) {
     @Provides
-    fun provideReposContractView():ReposContract.View = view
+    fun provideReposContractView(): ReposContract.View = view
 }
 
 @FragmentScoped

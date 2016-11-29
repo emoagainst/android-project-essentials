@@ -1,6 +1,10 @@
 package com.quickstart.mvp.repos
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.quickstart.models.Repo
 
 /**
@@ -9,7 +13,7 @@ import com.quickstart.models.Repo
  */
 class ReposFragment() : Fragment(), ReposContract.View{
 
-    lateinit override var presenter: ReposContract.Presenter
+    lateinit var mPresenter: ReposContract.Presenter
 
     companion object {
         @JvmStatic
@@ -18,10 +22,18 @@ class ReposFragment() : Fragment(), ReposContract.View{
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        mPresenter.loadRepos()
+        return view
+    }
 
+    override fun setPresenter(t: ReposContract.Presenter) {
+        mPresenter = checkNotNull(t)
+    }
 
     override fun showRepos(repos: List<Repo>) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showEmptyRepos() {
