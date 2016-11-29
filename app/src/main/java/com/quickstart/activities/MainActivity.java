@@ -9,30 +9,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.quickstart.Application;
 import com.quickstart.R;
-import com.quickstart.api.GitHubService;
-import com.quickstart.models.Repo;
-
-import java.util.List;
+import com.quickstart.mvp.repos.DaggerReposPresenterComponent;
+import com.quickstart.mvp.repos.ReposFragment;
+import com.quickstart.mvp.repos.ReposPresenter;
+import com.quickstart.mvp.repos.ReposPresenterModule;
+import com.quickstart.utils.ActivityUtilsKt;
 
 import javax.inject.Inject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    GitHubService api;
+    ReposPresenter mReposPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +58,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ((Application)getApplication()).getApplicationComponent().inject(this);
+        ReposFragment reposFragment = (ReposFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (reposFragment == null){
+            reposFragment = ReposFragment.newInstance();
+            ActivityUtilsKt.addFragmentToActivity(getSupportFragmentManager(), reposFragment, R.id.fragment_container);
+        }
 
-        api.listRepos("emoagainst").enqueue(new Callback<List<Repo>>() {
-
-            @Override
-            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-
-                Log.d("MainActivity", response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<List<Repo>> call, Throwable t) {
-
-            }
-        });
+        DaggerReposPresenterComponent
+                .builder()
+                .applicationComponent(((Application) getApplication()).getApplicationComponent())
+                .reposPresenterModule(new ReposPresenterModule(reposFragment))
+                .build();
     }
 
     @Override

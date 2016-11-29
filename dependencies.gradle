@@ -7,6 +7,7 @@ ext {
     verFabricPlugin = '1+'
     verKotlin = '1.0.5-2'
     verDagger = '2.8'
+    verRxJava2 = '2.0.1'
 
     compileSource = JavaVersion.VERSION_1_7
     compileTarget = JavaVersion.VERSION_1_7
@@ -22,12 +23,13 @@ ext {
             design                : "com.android.support:design:$verSupportLibrary",
             customTabs            : "com.android.support:customtabs:$verSupportLibrary",
             palette               : "com.android.support:palette-v7:$verSupportLibrary",
-            retrofit              : "com.squareup.retrofit2:retrofit:$verRetrofit2",
+            retrofit2              : "com.squareup.retrofit2:retrofit:$verRetrofit2",
             retrofitConverterGson : "com.squareup.retrofit2:converter-gson:$verRetrofit2",
-            retrofitAdapterRxJava : "com.squareup.retrofit2:adapter-rxjava:$verRetrofit2",
+            retrofit2Rxjava2Adapter: 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0',
             okHttp3Logging        : 'com.squareup.okhttp3:logging-interceptor:3.1.2',
             picasso               : 'com.squareup.picasso:picasso:2.5.2',
-            rxAndroid             : 'io.reactivex:rxandroid:1.0.1',
+            rxJava2               : "io.reactivex.rxjava2:rxjava:$verRxJava2",
+            rxAndroid             : "io.reactivex.rxjava2:rxandroid:$verRxJava2",
             circleImageView       : 'de.hdodenhof:circleimageview:1.3.0',
             jUnit                 : 'junit:junit:4.12',
             mockito               : 'org.mockito:mockito-core:1.10.19',

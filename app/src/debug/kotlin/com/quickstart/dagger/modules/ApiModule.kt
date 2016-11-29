@@ -1,6 +1,7 @@
 package com.quickstart.dagger.modules
 
 import android.content.Context
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.quickstart.BuildConfig
 import com.quickstart.api.CookieJar
 import com.quickstart.api.GitHubService
@@ -30,6 +31,7 @@ class ApiModule() {
         val retrofit = Retrofit.Builder()
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BuildConfig.HOST)
                 .build()
 

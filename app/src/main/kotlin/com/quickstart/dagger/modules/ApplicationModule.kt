@@ -16,7 +16,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class AndroidModule (val application: Application) {
+class ApplicationModule(val application: Application) {
 
     @Provides @Singleton
     fun provideSharedPreferences(): SharedPreferences =

@@ -65,26 +65,28 @@ dependencies {
     compile dependencies.cardView
     compile dependencies.recyclerView
     compile dependencies.design
-    compile dependencies.customTabs
+//    compile dependencies.customTabs
     compile dependencies.palette
-    compile dependencies.retrofit
+    compile dependencies.retrofit2
     compile dependencies.retrofitConverterGson
-    compile dependencies.retrofitAdapterRxJava
+    compile dependencies.retrofit2Rxjava2Adapter
     compile dependencies.okHttp3Logging
-    compile dependencies.picasso
+//    compile dependencies.picasso
     compile dependencies.rxAndroid
     compile dependencies.circleImageView
-    compile dependencies.jUnit
-    compile dependencies.mockito
+//    compile dependencies.jUnit
+//    compile dependencies.mockito
     compile dependencies.butterknife
     compile dependencies.glide
     compile dependencies.glideOkhttpIntegration
     compile dependencies.prettyEditText
-    compile dependencies.UIL
-    compile dependencies.imageCropper
-    compile dependencies.zoomablePhotoView
+//    compile dependencies.UIL
+//    compile dependencies.imageCropper
+//    compile dependencies.zoomablePhotoView
     compile dependencies.once
     compile dependencies.dagger
+    compile dependencies.rxJava2
+
     kapt dependencies.daggerCompiler
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
