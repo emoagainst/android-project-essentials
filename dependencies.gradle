@@ -1,5 +1,5 @@
 ext {
-    verSupportLibrary = '23.2.1'
+    verSupportLibrary = '25.0.1'
     verRetrofit2 = '2.0.1'
     verGradleTools = '2.3.0-alpha2'
     verBuildTools = '25.0.0'

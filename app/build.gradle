@@ -8,6 +8,7 @@ android {
 
     dataBinding {
         enabled = true
+        version = verGradleTools
     }
 
     compileOptions {
@@ -89,6 +90,8 @@ dependencies {
     compile dependencies.rxJava2
 
     kapt dependencies.daggerCompiler
+    kapt "com.android.databinding:compiler:$android.dataBinding.version"
+
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile dependencies.robolectric

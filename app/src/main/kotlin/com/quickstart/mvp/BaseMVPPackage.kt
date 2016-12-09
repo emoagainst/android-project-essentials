@@ -5,7 +5,7 @@ package com.quickstart.mvp
  * @author Alexey_Ivanov
  */
 interface BaseView<TPresenter>{
-    fun setPresenter (t:TPresenter)
+    fun setPresenter (presenter:TPresenter)
 }
 
 interface BasePresenter {

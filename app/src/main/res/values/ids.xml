@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="fragment_container" type="id" />
+    <item name="swipe_refresh_layout"
+        type="id" />
+    <item name="recycler_view"
+        type="id" />
+    <item name="toolbar_divider"
+        type="id" />
+    <item name="progress"
+        type="id" />
+    <item name="tv_empty_text"
+        type="id" />
 </resources>

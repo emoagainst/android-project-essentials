@@ -37,8 +37,15 @@ class ReposPresenter @Inject constructor(val reposView : ReposContract.View, val
 
             }
 
-            override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>?) {
-                Log.d("ReposPresenter", response?.body().toString());
+            override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>) {
+                Log.d("ReposPresenter", response.body().toString());
+                val repos = response.body()
+                if (repos.isEmpty()){
+                    reposView.showEmptyRepos()
+                }
+                else {
+                    reposView.showRepos(response.body())
+                }
             }
         });
     }
