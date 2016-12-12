@@ -72,6 +72,7 @@ class ReposFragment() : Fragment(), ReposContract.View{
     }
 
     override fun setLoadingIndicator(active: Boolean) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val visibility = if (active) View.VISIBLE else View.GONE
+        mProgressBar.visibility = visibility
     }
 }

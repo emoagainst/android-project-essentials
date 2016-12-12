@@ -1,12 +1,12 @@
 package com.quickstart.mvp.repos
 
 import android.util.Log
-import com.quickstart.api.GitHubService
+import com.quickstart.api.repos.ReposRequestManager
 import com.quickstart.models.Repo
 import com.quickstart.mvp.BaseView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.disposables.Disposable
+import io.reactivex.processors.AsyncProcessor
+import io.reactivex.subscribers.DisposableSubscriber
 import javax.inject.Inject
 
 /**
@@ -14,40 +14,55 @@ import javax.inject.Inject
  * @author Alexey_Ivanov
  */
 
-class ReposPresenter @Inject constructor(val reposView : ReposContract.View, val api : GitHubService) : ReposContract.Presenter{
+class ReposPresenter @Inject constructor(val reposView: ReposContract.View, val reposRequestManager: ReposRequestManager) : ReposContract.Presenter {
 
     @Inject
-    fun setupListeners(){
+    fun setupListeners() {
         Log.d("[ReposPresenter]", "setupListeners")
         reposView.setPresenter(this)
     }
 
+    lateinit var reposProcessor: AsyncProcessor <List<Repo>>
+    var reposDisposable: Disposable? = null
+
     override fun onViewResumed() {
+        reposDisposable?.let {
+            reposProcessor.subscribe(ReposSubcriber())
+        }
     }
 
     override fun onViewAttached(viewCallback: BaseView<*>) {
+
     }
 
     override fun onViewDetached() {
     }
 
     override fun loadRepos() {
-        api.listRepos("emoagainst").enqueue(object : Callback<List<Repo>> {
-            override fun onFailure(call: Call<List<Repo>>?, t: Throwable?) {
 
-            }
+        reposProcessor = AsyncProcessor.create<List<Repo>>()
+        reposDisposable = reposProcessor.subscribeWith(ReposSubcriber())
 
-            override fun onResponse(call: Call<List<Repo>>?, response: Response<List<Repo>>) {
-                Log.d("ReposPresenter", response.body().toString());
-                val repos = response.body()
-                if (repos.isEmpty()){
-                    reposView.showEmptyRepos()
-                }
-                else {
-                    reposView.showRepos(response.body())
-                }
-            }
-        });
+        reposRequestManager.getRepos().subscribe(reposProcessor)
     }
 
+    fun isNetworkingRequestMade() = reposDisposable !=null
+
+    inner class ReposSubcriber : DisposableSubscriber<List<Repo>>() {
+        override fun onNext(repos: List<Repo>) {
+            if (repos.isEmpty()) {
+                reposView.showEmptyRepos()
+            } else {
+                reposView.showRepos(repos)
+            }
+        }
+
+        override fun onComplete() {
+            reposView.setLoadingIndicator(false)
+        }
+
+        override fun onError(t: Throwable?) {
+            reposView.setLoadingIndicator(false)
+        }
+    }
 }
