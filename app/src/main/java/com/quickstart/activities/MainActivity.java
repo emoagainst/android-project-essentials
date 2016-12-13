@@ -67,8 +67,9 @@ public class MainActivity extends AppCompatActivity
 
         DaggerReposPresenterComponent
                 .builder()
-                .applicationComponent(((Application) getApplication()).getApplicationComponent())
-                .reposPresenterModule(new ReposPresenterModule(reposFragment)).build()
+                .reposPresenterModule(new ReposPresenterModule(reposFragment))
+                .requestManagerComponent(((Application)getApplication()).getRequestManagerComponent())
+                .build()
                 .inject(this);
     }
 

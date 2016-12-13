@@ -1,7 +1,7 @@
 package com.quickstart.mvp.repos
 
-import com.quickstart.ApplicationComponent
 import com.quickstart.activities.MainActivity
+import com.quickstart.dagger.modules.RequestManagerComponent
 import com.quickstart.models.Repo
 import com.quickstart.mvp.BasePresenter
 import com.quickstart.mvp.BaseView
@@ -35,7 +35,7 @@ class ReposPresenterModule(val view: ReposContract.View) {
 }
 
 @FragmentScoped
-@Component(dependencies = arrayOf(ApplicationComponent::class), modules = arrayOf(ReposPresenterModule::class))
+@Component(dependencies = arrayOf(RequestManagerComponent::class), modules = arrayOf(ReposPresenterModule::class))
 interface ReposPresenterComponent {
     fun inject(activity: MainActivity)
 }

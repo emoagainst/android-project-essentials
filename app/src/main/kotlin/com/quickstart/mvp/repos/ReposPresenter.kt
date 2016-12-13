@@ -14,7 +14,10 @@ import javax.inject.Inject
  * @author Alexey_Ivanov
  */
 
-class ReposPresenter @Inject constructor(val reposView: ReposContract.View, val reposRequestManager: ReposRequestManager) : ReposContract.Presenter {
+class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : ReposContract.Presenter {
+
+    @Inject
+    lateinit var requestManager : ReposRequestManager
 
     @Inject
     fun setupListeners() {
@@ -43,7 +46,7 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View, val 
         reposProcessor = AsyncProcessor.create<List<Repo>>()
         reposDisposable = reposProcessor.subscribeWith(ReposSubcriber())
 
-        reposRequestManager.getRepos().subscribe(reposProcessor)
+        requestManager.getRepos().subscribe(reposProcessor)
     }
 
     fun isNetworkingRequestMade() = reposDisposable !=null

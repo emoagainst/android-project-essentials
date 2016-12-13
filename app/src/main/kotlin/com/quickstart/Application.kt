@@ -1,10 +1,8 @@
 package com.quickstart
 
 import android.app.Application
-import com.quickstart.api.repos.ReposRequestManager
-import com.quickstart.dagger.modules.ApiModule
-import com.quickstart.dagger.modules.ApplicationModule
-import com.quickstart.dagger.modules.RequestManagerModules
+import com.quickstart.api.GitHubService
+import com.quickstart.dagger.modules.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,18 +12,27 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = arrayOf(ApplicationModule::class, ApiModule::class, RequestManagerModules::class))
+@Component(modules = arrayOf(ApplicationModule::class))
 interface ApplicationComponent {
     fun inject(application: Application)
-    fun getReposManager() : ReposRequestManager
 }
 
 class Application : Application() {
+    private val apiModule by lazy { ApiModule() }
+    private val applicationModule by lazy { ApplicationModule(this) }
+
     val applicationComponent: ApplicationComponent by lazy {
         DaggerApplicationComponent
                 .builder()
-                .applicationModule(ApplicationModule(this))
-                .apiModule(ApiModule())
+                .applicationModule(applicationModule)
+                .build()
+    }
+
+    val requestManagerComponent: RequestManagerComponent by lazy {
+        DaggerRequestManagerComponent
+                .builder()
+                .applicationModule(applicationModule)
+                .apiModule(apiModule)
                 .requestManagerModules(RequestManagerModules())
                 .build()
     }
