@@ -25,4 +25,4 @@ class ReposAdapter(val repos : MutableList<Repo>) : RecyclerView.Adapter<RepoVie
     override fun getItemCount(): Int = repos.size
 }
 
-class RepoViewHolder(val binding : ListItemRepoBinding) : RecyclerView.ViewHolder(binding.root){}
+class RepoViewHolder(val binding : ListItemRepoBinding) : RecyclerView.ViewHolder(binding.root)

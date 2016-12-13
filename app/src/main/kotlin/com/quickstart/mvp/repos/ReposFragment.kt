@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import butterknife.bindView
+import com.quickstart.utils.bindView
 import com.quickstart.R
 import com.quickstart.models.Repo
 import java.util.*

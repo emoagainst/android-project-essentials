@@ -3,8 +3,6 @@ import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ScrollView;
 
 
 /**
@@ -39,24 +37,24 @@ public class RefreshLayout extends android.support.v4.widget.SwipeRefreshLayout 
             View v = findViewById(id);
             if (v == null)
                 continue;
-            if (android.os.Build.VERSION.SDK_INT < 14) {
-                if (v instanceof AbsListView) {
-                    AbsListView absListView = (AbsListView) v;
-                    return absListView.getChildCount() > 0
-                           && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                                                                                       .getTop() < absListView.getPaddingTop());
-                }
-                else if (v instanceof ScrollView) {
-                    ScrollView scrollView = (ScrollView) v;
-                    return scrollView.getScrollY() > 0;
-                }
-                else {
-                    return super.canChildScrollUp();
-                }
-            }
-            else {
+//            if (android.os.Build.VERSION.SDK_INT < 14) {
+//                if (v instanceof AbsListView) {
+//                    AbsListView absListView = (AbsListView) v;
+//                    return absListView.getChildCount() > 0
+//                           && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
+//                                                                                       .getTop() < absListView.getPaddingTop());
+//                }
+//                else if (v instanceof ScrollView) {
+//                    ScrollView scrollView = (ScrollView) v;
+//                    return scrollView.getScrollY() > 0;
+//                }
+//                else {
+//                    return super.canChildScrollUp();
+//                }
+//            }
+//            else {
                 return ViewCompat.canScrollVertically(v, -1);
-            }
+//            }
         }
 
         return true;

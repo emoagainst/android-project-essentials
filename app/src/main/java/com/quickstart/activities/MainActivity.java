@@ -21,6 +21,8 @@ import com.quickstart.mvp.repos.ReposPresenter;
 import com.quickstart.mvp.repos.ReposPresenterModule;
 import com.quickstart.utils.ActivityUtilsKt;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NotNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

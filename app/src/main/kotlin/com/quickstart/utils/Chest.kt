@@ -1,4 +1,4 @@
-package chest
+package com.quickstart.utils
 
 import android.content.Context
 import android.content.SharedPreferences

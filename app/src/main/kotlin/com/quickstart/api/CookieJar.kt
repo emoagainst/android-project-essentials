@@ -1,7 +1,7 @@
 package com.quickstart.api
 
 import android.content.Context
-import chest.Chest
+import com.quickstart.utils.Chest
 import okhttp3.Cookie
 import okhttp3.HttpUrl
 import java.net.URISyntaxException
@@ -18,7 +18,7 @@ class CookieJar (context: Context): okhttp3.CookieJar {
     private val STORE_NAME = "AndroidCookieStoreChest"
 
     private var chest: Chest by Delegates.notNull()
-    private val cookieMap: Hashtable<HttpUrl, MutableList<Cookie>> = Hashtable<HttpUrl, MutableList<Cookie>>()
+    private val cookieMap: Hashtable<HttpUrl, MutableList<Cookie>> = Hashtable()
 
     init {
         chest = Chest.newInstance(context, STORE_NAME)
@@ -76,7 +76,7 @@ class CookieJar (context: Context): okhttp3.CookieJar {
         val host = getHost(url)
         val cookiesToStore = mergeCookies(cookieMap[host] ?: ArrayList(), listOfCookies)
         cookieMap[host] = cookiesToStore
-        chest.putStringSet(host.toString(), cookiesToStore.map { it.toString() }.toSet())
+        chest.putStringSet(host.toString(), cookiesToStore.map(Cookie::toString).toSet())
     }
 
     private fun mergeCookies(existingCookies: MutableList<Cookie>, newCookies: MutableList<Cookie>): MutableList<Cookie> {

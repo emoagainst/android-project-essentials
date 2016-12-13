@@ -38,13 +38,13 @@ public abstract class BaseFragmentActivity extends AppCompatActivity {
 
     public void showSnackbar (String text){
 
-        Snackbar snackbar = Snackbar.make(null, text, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 
     public void showSnackbar (@StringRes int textResId){
 
-        Snackbar snackbar = Snackbar.make(null, textResId, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), textResId, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 

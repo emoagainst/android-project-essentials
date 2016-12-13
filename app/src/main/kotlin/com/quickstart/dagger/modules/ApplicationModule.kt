@@ -1,5 +1,6 @@
 package com.quickstart.dagger.modules
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.google.gson.FieldNamingPolicy
@@ -27,7 +28,7 @@ class ApplicationModule(val application: Application) {
          GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
 
     @Provides
-    fun provideContext() = application.applicationContext
+    fun provideContext() : Context = application.applicationContext
 }
 
 

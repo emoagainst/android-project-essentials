@@ -39,7 +39,7 @@ class ApiModule() {
     }
 
     @Provides @RestApiScope
-    fun provideOkHttpClient(loggingInterceptor: Interceptor, cookieJar: CookieJar) =
+    fun provideOkHttpClient(loggingInterceptor: Interceptor, cookieJar: CookieJar) : OkHttpClient =
             OkHttpClient.Builder()
                     .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
                     .readTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
@@ -48,7 +48,7 @@ class ApiModule() {
                     .build()
 
     @Provides @RestApiScope
-    fun providesCookieJar(context: Context) =
+    fun providesCookieJar(context: Context): CookieJar =
             CookieJar(context)
 
     @Provides @RestApiScope
