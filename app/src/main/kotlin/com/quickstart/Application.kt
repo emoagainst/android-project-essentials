@@ -1,8 +1,12 @@
 package com.quickstart
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.quickstart.api.GitHubService
 import com.quickstart.dagger.modules.*
+import com.quickstart.dagger.scopes.RestApiScope
 import dagger.Component
 import javax.inject.Singleton
 
@@ -15,9 +19,19 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(ApplicationModule::class))
 interface ApplicationComponent {
     fun inject(application: Application)
+    fun sharedPreferences(): SharedPreferences
+    fun context() : Context
+    fun gson():Gson
+}
+
+@RestApiScope
+@Component (dependencies = arrayOf(ApplicationComponent::class), modules = arrayOf(ApiModule::class))
+interface ApiComponent {
+    fun gitHubService() : GitHubService
 }
 
 class Application : Application() {
+
     private val apiModule by lazy { ApiModule() }
     private val applicationModule by lazy { ApplicationModule(this) }
 
@@ -28,11 +42,18 @@ class Application : Application() {
                 .build()
     }
 
+    val apiComponent : ApiComponent by lazy {
+        DaggerApiComponent
+                .builder()
+                .applicationComponent(applicationComponent)
+                .apiModule(apiModule)
+                .build()
+    }
+
     val requestManagerComponent: RequestManagerComponent by lazy {
         DaggerRequestManagerComponent
                 .builder()
-                .applicationModule(applicationModule)
-                .apiModule(apiModule)
+                .apiComponent(apiComponent)
                 .requestManagerModules(RequestManagerModules())
                 .build()
     }

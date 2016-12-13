@@ -5,7 +5,7 @@ import com.quickstart.dagger.modules.RequestManagerComponent
 import com.quickstart.models.Repo
 import com.quickstart.mvp.BasePresenter
 import com.quickstart.mvp.BaseView
-import com.quickstart.utils.FragmentScoped
+import com.quickstart.dagger.scopes.FragmentScoped
 import dagger.Component
 import dagger.Module
 import dagger.Provides

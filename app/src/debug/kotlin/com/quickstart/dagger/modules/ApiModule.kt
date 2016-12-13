@@ -5,6 +5,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.quickstart.BuildConfig
 import com.quickstart.api.CookieJar
 import com.quickstart.api.GitHubService
+import com.quickstart.dagger.scopes.RestApiScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -13,7 +14,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 /**
  * Created at 25.11.16 13:50
@@ -26,7 +26,7 @@ class ApiModule() {
         val CONNECTION_TIMEOUT = 40L //seconds
     }
 
-    @Provides @Singleton
+    @Provides @RestApiScope
     fun provideGitHubService(client: OkHttpClient): GitHubService {
         val retrofit = Retrofit.Builder()
                 .client(client)
@@ -38,7 +38,7 @@ class ApiModule() {
         return retrofit.create(GitHubService::class.java)
     }
 
-    @Provides @Singleton
+    @Provides @RestApiScope
     fun provideOkHttpClient(loggingInterceptor: Interceptor, cookieJar: CookieJar) =
             OkHttpClient.Builder()
                     .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
@@ -47,11 +47,11 @@ class ApiModule() {
                     .addInterceptor(loggingInterceptor)
                     .build()
 
-    @Provides @Singleton
+    @Provides @RestApiScope
     fun providesCookieJar(context: Context) =
             CookieJar(context)
 
-    @Provides @Singleton
+    @Provides @RestApiScope
     fun provideLoggingInterceptor(): Interceptor {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
