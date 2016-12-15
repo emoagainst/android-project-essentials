@@ -1,7 +1,6 @@
 package com.quickstart.mvp.repos
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,18 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.quickstart.utils.bindView
 import com.quickstart.R
 import com.quickstart.models.Repo
+import com.quickstart.mvp.BaseFragment
+import com.quickstart.utils.bindView
 import java.util.*
 
 /**
  * Created at 29.11.16 10:34
  * @author Alexey_Ivanov
  */
-class ReposFragment() : Fragment(), ReposContract.View{
+class ReposFragment() : BaseFragment<ReposContract.Presenter>(), ReposContract.View{
 
-    lateinit var mPresenter: ReposContract.Presenter
+    override lateinit var mPresenter: ReposContract.Presenter
     val mRecyclerView : RecyclerView by bindView(R.id.recycler_view)
     val mProgressBar : ProgressBar by bindView(R.id.progress)
     val mEmptyTextView : TextView by bindView(R.id.tv_empty_text)
@@ -35,7 +35,6 @@ class ReposFragment() : Fragment(), ReposContract.View{
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_repos, container, false)
-        mPresenter.loadRepos()
         return view
     }
 
@@ -45,10 +44,6 @@ class ReposFragment() : Fragment(), ReposContract.View{
         mRecyclerView.adapter = adapter
         mRecyclerView.layoutManager = LinearLayoutManager(context)
 
-    }
-
-    override fun setPresenter(presenter: ReposContract.Presenter) {
-        mPresenter = checkNotNull(presenter)
     }
 
     override fun showRepos(repos: List<Repo>) {

@@ -22,23 +22,26 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
     @Inject
     fun setupListeners() {
         Log.d("[ReposPresenter]", "setupListeners")
-        reposView.setPresenter(this)
+        reposView.mPresenter = this
     }
 
     lateinit var reposProcessor: AsyncProcessor <List<Repo>>
     var reposDisposable: Disposable? = null
 
     override fun onViewResumed() {
+        Log.d("[ReposPresenter]", "onViewResumed")
         reposDisposable?.let {
             reposProcessor.subscribe(ReposSubcriber())
         }
     }
 
     override fun onViewAttached(viewCallback: BaseView<*>) {
-
+        Log.d("[ReposPresenter]", "onViewAttached")
     }
 
+
     override fun onViewDetached() {
+        Log.d("[ReposPresenter]", "onViewDetached")
     }
 
     override fun loadRepos() {
