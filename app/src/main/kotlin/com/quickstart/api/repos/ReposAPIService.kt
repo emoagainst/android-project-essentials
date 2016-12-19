@@ -3,6 +3,8 @@ package com.quickstart.api.repos
 import android.util.Log
 import com.quickstart.api.GitHubService
 import com.quickstart.models.Repo
+import com.quickstart.utils.getRealm
+import com.quickstart.utils.performTransactionAndClose
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,6 +24,7 @@ class ReposAPIService (val githubAPI : GitHubService) {
         return githubAPI.listRepos(forUser)
                 .doOnSubscribe { isRequestingRepos = true }
                 .doOnTerminate { isRequestingRepos = false }
+                .doOnNext { repos-> getRealm().performTransactionAndClose{realm -> realm.copyToRealmOrUpdate(repos)}}
                 .doOnError { th -> handleReposError(th) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

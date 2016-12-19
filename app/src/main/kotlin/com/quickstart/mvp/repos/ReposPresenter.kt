@@ -17,7 +17,7 @@ import javax.inject.Inject
 class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : ReposContract.Presenter {
 
     @Inject
-    lateinit var requestManager : ReposRequestManager
+    lateinit var requestManager: ReposRequestManager
 
     @Inject
     fun setupListeners() {
@@ -29,9 +29,8 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
     var reposDisposable: Disposable? = null
 
     override fun onViewResumed() {
-        Log.d("[ReposPresenter]", "onViewResumed")
         reposDisposable?.let {
-            reposProcessor.subscribe(ReposSubcriber())
+                reposProcessor.subscribe(ReposSubcriber())
         }
     }
 
@@ -48,14 +47,17 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
 
         reposProcessor = AsyncProcessor.create<List<Repo>>()
         reposDisposable = reposProcessor.subscribeWith(ReposSubcriber())
-
+        Log.d("[ReposPresenter]", "loadRepos")
         requestManager.getRepos().subscribe(reposProcessor)
     }
 
-    fun isNetworkingRequestMade() = reposDisposable !=null
+    fun isNetworkingRequestMade() = reposDisposable != null
+
 
     inner class ReposSubcriber : DisposableSubscriber<List<Repo>>() {
         override fun onNext(repos: List<Repo>) {
+            Log.d("[ReposPresenter]", "repos = $repos")
+
             if (repos.isEmpty()) {
                 reposView.showEmptyRepos()
             } else {

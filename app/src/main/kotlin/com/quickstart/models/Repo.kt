@@ -1,10 +1,14 @@
 package com.quickstart.models
 
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+
 /**
  * Created at 24.11.16 13:03
  * @author Alexey_Ivanov
  */
-class Repo (var id: Long, var name : String){
+open class Repo constructor (@PrimaryKey var id: Long, var name : String) : RealmObject() {
+    constructor() : this (-1, "")
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

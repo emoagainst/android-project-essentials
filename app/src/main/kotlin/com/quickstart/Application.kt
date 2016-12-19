@@ -3,11 +3,13 @@ package com.quickstart
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.support.multidex.MultiDexApplication
 import com.google.gson.Gson
 import com.quickstart.api.GitHubService
 import com.quickstart.dagger.modules.*
 import com.quickstart.dagger.scopes.RestApiScope
 import dagger.Component
+import io.realm.Realm
 import javax.inject.Singleton
 
 /**
@@ -30,7 +32,7 @@ interface ApiComponent {
     fun gitHubService() : GitHubService
 }
 
-class Application : Application() {
+class Application : MultiDexApplication() {
 
     private val apiModule by lazy { ApiModule() }
     private val applicationModule by lazy { ApplicationModule(this) }
@@ -61,5 +63,7 @@ class Application : Application() {
     override fun onCreate() {
         super.onCreate()
         applicationComponent.inject(this)
+
+        Realm.init(this)
     }
 }

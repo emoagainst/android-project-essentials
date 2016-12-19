@@ -8,7 +8,9 @@ ext {
     verKotlin = '1.0.5-2'
     verDagger = '2.8'
     verRxJava2 = '2.0.1'
+    verRxJava = '1.2.3'
     verOkHttp = '3.4.2'
+    verRealm = '2.2.1'
 
     compileSource = JavaVersion.VERSION_1_7
     compileTarget = JavaVersion.VERSION_1_7
@@ -32,6 +34,8 @@ ext {
             picasso               : 'com.squareup.picasso:picasso:2.5.2',
             rxJava2               : "io.reactivex.rxjava2:rxjava:$verRxJava2",
             rxAndroid             : "io.reactivex.rxjava2:rxandroid:$verRxJava2",
+            rxJava2ToRxJavaInterop: 'com.github.akarnokd:rxjava2-interop:0.7.2',
+            rxJava                : "io.reactivex:rxjava:$verRxJava", // !!!!!only for Realm suport
             circleImageView       : 'de.hdodenhof:circleimageview:1.3.0',
             jUnit                 : 'junit:junit:4.12',
             mockito               : 'org.mockito:mockito-core:1.10.19',
@@ -47,6 +51,7 @@ ext {
             dagger                : "com.google.dagger:dagger:$verDagger",
             daggerCompiler        : "com.google.dagger:dagger-compiler:$verDagger",
             kotlin                : "org.jetbrains.kotlin:kotlin-stdlib:$verKotlin",
-            kotlinReflect         : "org.jetbrains.kotlin:kotlin-reflect:$verKotlin"
+            kotlinReflect         : "org.jetbrains.kotlin:kotlin-reflect:$verKotlin",
+            multidex              : 'com.android.support:multidex:1.0.1'
     ]
 }

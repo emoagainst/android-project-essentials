@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.quickstart.R
 import com.quickstart.models.Repo
 import com.quickstart.mvp.BaseFragment
+import com.quickstart.utils.addIfNotExists
 import com.quickstart.utils.bindView
 import java.util.*
 
@@ -43,7 +44,7 @@ class ReposFragment() : BaseFragment<ReposContract.Presenter>(), ReposContract.V
         adapter = ReposAdapter(ArrayList())
         mRecyclerView.adapter = adapter
         mRecyclerView.layoutManager = LinearLayoutManager(context)
-
+        mPresenter.loadRepos()
     }
 
     override fun showRepos(repos: List<Repo>) {
@@ -53,8 +54,7 @@ class ReposFragment() : BaseFragment<ReposContract.Presenter>(), ReposContract.V
             mProgressBar.visibility = View.GONE
             mEmptyTextView.visibility = View.GONE
         }
-
-        adapter.repos.addAll(repos)
+        repos.forEach { adapter.repos.addIfNotExists(it) }
         adapter.notifyDataSetChanged()
     }
 
