@@ -1,8 +1,7 @@
 package com.quickstart.api.repos
 
 import com.quickstart.api.GitHubService
-import com.quickstart.api.cacheRemoteList
-import com.quickstart.api.remoteFlowable
+import com.quickstart.api.toRemoteCacheableFlowable
 import com.quickstart.models.Repo
 import io.reactivex.Flowable
 
@@ -13,16 +12,14 @@ import io.reactivex.Flowable
 
 
 class ReposAPIService(val githubAPI: GitHubService) {
-
+    val TAG = "[ReposAPIService]"
     var isRequestingRepos = false
 
     fun getRepos(forUser: String): Flowable<List<Repo>> {
-        return githubAPI.listRepos(forUser).remoteFlowable()
-                .doOnSubscribe { isRequestingRepos = true }
-                .doOnTerminate { isRequestingRepos = false }
-                .doOnNext { repos ->
-                    cacheRemoteList(repos)
-                }
+        return githubAPI.listRepos(forUser)
+                .toRemoteCacheableFlowable()
+                .doOnSubscribe {isRequestingRepos = true}
+                .doOnTerminate {isRequestingRepos = false}
                 .doOnError { th -> handleReposError(th) }
     }
 
