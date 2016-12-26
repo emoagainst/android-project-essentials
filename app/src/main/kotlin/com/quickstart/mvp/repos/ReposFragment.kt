@@ -54,7 +54,9 @@ class ReposFragment() : BaseFragment<ReposContract.Presenter>(), ReposContract.V
             mProgressBar.visibility = View.GONE
             mEmptyTextView.visibility = View.GONE
         }
-        repos.forEach { adapter.repos.addIfNotExists(it) }
+        repos.forEach {
+            adapter.repos.addIfNotExists(it) }
+
         adapter.notifyDataSetChanged()
     }
 

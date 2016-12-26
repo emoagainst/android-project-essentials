@@ -5,7 +5,7 @@ import com.quickstart.api.repos.ReposRequestManager
 import com.quickstart.models.Repo
 import com.quickstart.mvp.BaseView
 import io.reactivex.disposables.Disposable
-import io.reactivex.processors.AsyncProcessor
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.subscribers.DisposableSubscriber
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
         reposView.mPresenter = this
     }
 
-    lateinit var reposProcessor: AsyncProcessor <List<Repo>>
+    lateinit var reposProcessor: PublishProcessor <List<Repo>>
     var reposDisposable: Disposable? = null
 
     override fun onViewResumed() {
@@ -45,9 +45,8 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
 
     override fun loadRepos() {
 
-        reposProcessor = AsyncProcessor.create<List<Repo>>()
+        reposProcessor = PublishProcessor.create<List<Repo>>()
         reposDisposable = reposProcessor.subscribeWith(ReposSubcriber())
-        Log.d("[ReposPresenter]", "loadRepos")
         requestManager.getRepos().subscribe(reposProcessor)
     }
 
@@ -56,7 +55,6 @@ class ReposPresenter @Inject constructor(val reposView: ReposContract.View) : Re
 
     inner class ReposSubcriber : DisposableSubscriber<List<Repo>>() {
         override fun onNext(repos: List<Repo>) {
-            Log.d("[ReposPresenter]", "repos = $repos")
 
             if (repos.isEmpty()) {
                 reposView.showEmptyRepos()

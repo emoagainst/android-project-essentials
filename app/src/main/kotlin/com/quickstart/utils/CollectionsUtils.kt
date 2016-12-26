@@ -5,6 +5,7 @@ package com.quickstart.utils
  * @author Alexey_Ivanov
  */
 inline fun <E> MutableCollection<E>.addIfNotExists(element:E){
+
     if (!this.contains(element)){
         this.add(element)
     }
