@@ -3,6 +3,7 @@ package com.quickstart.dagger.modules
 import com.quickstart.ApiComponent
 import com.quickstart.api.GitHubService
 import com.quickstart.api.repos.ReposAPIService
+import com.quickstart.api.repos.ReposLocalService
 import com.quickstart.api.repos.ReposRequestManager
 import com.quickstart.dagger.scopes.DomainScope
 import dagger.Component
@@ -19,8 +20,8 @@ class RequestManagerModules {
 
     @Provides
     @DomainScope
-    fun provideReposRequestManager(reposService: ReposAPIService): ReposRequestManager {
-        return ReposRequestManager(reposService)
+    fun provideReposRequestManager(reposRemote: ReposAPIService, reposLocal: ReposLocalService): ReposRequestManager {
+        return ReposRequestManager(reposRemote, reposLocal)
     }
 
     @Provides
@@ -28,11 +29,17 @@ class RequestManagerModules {
     fun provideReposAPIService(githubService: GitHubService): ReposAPIService {
         return ReposAPIService(githubService)
     }
+
+    @Provides
+    @DomainScope
+    fun provideReposLocalService(): ReposLocalService {
+        return ReposLocalService()
+    }
 }
 
 @DomainScope
 @Component(dependencies = arrayOf(ApiComponent::class), modules = arrayOf(RequestManagerModules::class))
 interface RequestManagerComponent {
-    fun getReposRequestManager() : ReposRequestManager
+    fun getReposRequestManager(): ReposRequestManager
 }
 
